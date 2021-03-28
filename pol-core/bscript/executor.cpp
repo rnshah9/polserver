@@ -2494,7 +2494,7 @@ void Executor::ins_return( const Instruction& /*ins*/ )
 {
   if ( ControlStack.empty() )
   {
-    ERROR_PRINT << "Return without GOSUB!\n";
+    ERROR_PRINT << "Return without GOSUB! (PC=" << PC << ", " << scriptname() << ")\n";
 
     seterror( true );
     return;
