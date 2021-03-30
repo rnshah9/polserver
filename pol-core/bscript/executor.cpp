@@ -2429,7 +2429,16 @@ void Executor::ins_jsr_userfunc( const Instruction& ins )
   rc.ValueStackDepth = static_cast<unsigned int>( ValueStack.size() );
   ControlStack.push_back( rc );
 
+  if ( scriptname().find( "CombatHook" ) != std::string::npos )
+  {
+    DEBUGLOG << "DEBUG[" << scriptname() << "] userfunc - from PC: " << PC
+             << " | to PC: " << (unsigned)ins.token.lval << " | "
+             << " (" << ControlStack.size() << ")\n";
+  }
+
   PC = (unsigned)ins.token.lval;
+
+
   if ( ControlStack.size() >= escript_config.max_call_depth )
   {
     fmt::Writer tmp;
@@ -2482,6 +2491,14 @@ void Executor::ins_gosub( const Instruction& ins )
   rc.PC = PC;
   rc.ValueStackDepth = static_cast<unsigned int>( ValueStack.size() );
   ControlStack.push_back( rc );
+
+  if ( scriptname().find( "CombatHook" ) != std::string::npos )
+  {
+    DEBUGLOG << "DEBUG[" << scriptname() << "] gosub - from PC: " << PC
+             << " | to PC: " << (unsigned)ins.token.lval << " | "
+             << " (" << ControlStack.size() << ")\n";
+  }
+
   if ( Locals2 )
     upperLocals2.push_back( Locals2 );
   Locals2 = new BObjectRefVec;
@@ -2500,6 +2517,14 @@ void Executor::ins_return( const Instruction& /*ins*/ )
     return;
   }
   ReturnContext& rc = ControlStack.back();
+
+  if ( scriptname().find( "CombatHook" ) != std::string::npos )
+  {
+    DEBUGLOG << "DEBUG[" << scriptname() << "] return - from PC: " << PC << " | to PC: " << rc.PC
+             << " | "
+             << " (" << ControlStack.size() << ")\n";
+  }
+
   PC = rc.PC;
   // FIXME do something with rc.ValueStackDepth
   ControlStack.pop_back();
