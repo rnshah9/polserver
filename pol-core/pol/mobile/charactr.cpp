@@ -3434,6 +3434,8 @@ void Character::check_attack_after_move()
       FUNCTION_CHECKPOINT( check_attack_after_move, 4 );
       if ( Core::settingsManager.combat_config.send_swing_packet && client != nullptr )
         send_fight_occuring( client, opponent );
+
+      mob_flags_.remove( MOB_FLAGS::READY_TO_SWING ); // we don't want attack() to recursively cause new attacks
       attack( opponent );
       FUNCTION_CHECKPOINT( check_attack_after_move, 5 );
       reset_swing_timer();
