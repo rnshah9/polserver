@@ -1,0 +1,12 @@
+FROM --platform=linux/amd64 ubuntu:22.04
+
+RUN apt-get update
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential cmake libz-dev libssl-dev pkg-config uuid-dev
+
+COPY . /repo
+WORKDIR /repo/bin-build
+RUN cmake ..
+RUN make -j8
+RUN make install
+
+WORKDIR /repo/testsuite/pol

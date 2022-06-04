@@ -1,0 +1,8 @@
+project: polserver
+target: polserver
+
+cmds:
+  - cmd: /repo/bin/uotool tiledump @@
+    filepath: /test.src
+    env:
+      DISABLE_SMOKETEST: '1'
